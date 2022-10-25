@@ -15,7 +15,7 @@ namespace StocksProfitCalculator
         [Name("Open")]
         public double Open { get; set; }
 
-        [Name("High")]
+        [Name("Low")]
         public double Low { get; set; }
 
         [Name("High")]
