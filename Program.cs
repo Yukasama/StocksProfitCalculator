@@ -3,6 +3,7 @@ using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration.Attributes;
 using static StocksProfitCalculator.GetData;
+using System.Linq;
 
 namespace StocksProfitCalculator
 {
@@ -10,7 +11,10 @@ namespace StocksProfitCalculator
     {
         static void Main()
         {
-            Console.WriteLine("Started");
+            //Initialize Stocks
+            string[] symbols = {"AAPL", "MSFT"};
+
+
             List<PriceData> data = readFile("AAPL");
             double max = maxProfit(data);
             Console.WriteLine(max);
@@ -18,7 +22,7 @@ namespace StocksProfitCalculator
 
         public static List<PriceData> readFile(string symbol)
         {
-            string path = $"../../../{symbol}.csv";
+            string path = $"{symbol}.csv";
             List<PriceData> data = new();
             using (var streamReader = new StreamReader(path))
             {
@@ -33,16 +37,35 @@ namespace StocksProfitCalculator
 
         static double maxProfit(List<PriceData> data)
         {
-            double max = 0, min = 0;
-            double close = 0;
-            DateTime date = new();
+            List<double> close = new();
+            List<DateTime> dates = new();
+
+            foreach(PriceData c in data) {
+                close.Add(c.Close);
+                dates.Add(c.Date);
+            }
+
+            int lookUpRange = 20; //Has to be even number
             Dictionary<DateTime, double> highs = new();
+            Dictionary<DateTime, double> lows = new();
+
             for(int i = 0; i < data.Count; ++i)
             {
-                close = data[i].Close;
-                date = data[i].Date;
-                close;
+                try {
+                    if (close[i + lookUpRange / 2] >= close.GetRange(i, lookUpRange).Max()) {
+                        highs.Add(dates[i + lookUpRange / 2], close[i + lookUpRange / 2]);
+                    } else if (close[i + lookUpRange / 2] <= close.GetRange(i, lookUpRange).Min()) {
+                        lows.Add(dates[i + lookUpRange / 2], close[i + lookUpRange / 2]);
+                    }
+                } catch (System.ArgumentException) {
+                    continue;
+                }
             }
+
+            foreach(KeyValuePair<DateTime, double> h in highs) {
+                
+            }
+            
             return 0;
         }
 
