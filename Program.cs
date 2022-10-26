@@ -19,7 +19,7 @@ namespace StocksProfitCalculator
             createCVSs(symbols);
 
             //Get gathered profit for all trades
-            double profit = maxProfit(symbols, 20); //Second Parameter has to be even number
+            double profit = maxProfit(symbols, 20, 1); //Second Parameter has to be even number (LookupRange)
             
             System.Console.WriteLine(
                 $"Max Profit for {symbols.Count} Stock/s: {profit}$");
@@ -68,7 +68,7 @@ namespace StocksProfitCalculator
         
 
         //Returns the max profit sum
-        static double maxProfit(List<string> symbols, int lookUpRange)
+        static double maxProfit(List<string> symbols, int lookUpRange, int shares=1)
         {
             double result = 0;
             Dictionary<string, double> stockProfits = new();
@@ -127,6 +127,7 @@ namespace StocksProfitCalculator
                     }
                 }
 
+                sum = sum * shares;
                 stockProfits.Add(s, sum);
 
                 result += sum;
