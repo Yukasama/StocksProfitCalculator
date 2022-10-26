@@ -9,19 +9,19 @@ namespace StocksProfitCalculator
 {
     public class PriceData
     {
-        [Name("Date")]
+        [Name("date")]
         public DateTime Date { get; set; }
 
-        [Name("Open")]
+        [Name("open")]
         public double Open { get; set; }
 
-        [Name("Low")]
+        [Name("low")]
         public double Low { get; set; }
 
-        [Name("High")]
+        [Name("high")]
         public double High { get; set; }
 
-        [Name("Close")]
+        [Name("close")]
         public double Close { get; set; }
     }
 }

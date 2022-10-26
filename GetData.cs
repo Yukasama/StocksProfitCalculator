@@ -12,17 +12,9 @@ namespace StocksProfitCalculator
 {
     class GetData
     {
-        string symbol;
-
         string baseUrl = "https://financialmodelingprep.com/api/v3/";
         string apiKey = "78aadddb936c76ea8b666634222c3264";
-        string historyUrl = "historical-price-full/AAPL?datatype=csv&apikey=";
-        string symbolUrl = "stock/list?apikey=";
     
-        public GetData(string symbol)
-        {
-            this.symbol = symbol;
-        }
         public GetData()
         {
 
@@ -31,7 +23,7 @@ namespace StocksProfitCalculator
         public List<string> symbolList() {
 
             //API Url for Stock List
-            string path = $"{baseUrl}{symbolUrl}{apiKey}";
+            string path = $"{baseUrl}stock/list?apikey={apiKey}";
 
             //Getting Data from API
             List<string> symbols = new List<string>();
@@ -52,6 +44,27 @@ namespace StocksProfitCalculator
             }
 
             return symbols;
+        }
+
+        public string downloadCsv(string symbol) {
+
+            //API Url for Stock List
+            string path = $"{baseUrl}historical-price-full/{symbol}?datatype=csv&apikey={apiKey}";
+            string result = "";
+
+            //Getting Data from API
+            List<string> symbols = new List<string>();
+            using (var client = new HttpClient())
+            {
+                //Make API Call for Web Address
+                HttpResponseMessage apiCall = client.GetAsync(path).Result;
+                if (apiCall.IsSuccessStatusCode)
+                {
+                    result = apiCall.Content.ReadAsStringAsync().Result;
+                }
+            }
+
+            return result;
         }
     }
 }
